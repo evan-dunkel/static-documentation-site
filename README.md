@@ -1,0 +1,1 @@
+A static knowledge-base/wiki generator. Integrates with StrapiCMS.

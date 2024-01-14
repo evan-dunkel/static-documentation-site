@@ -1,0 +1,36 @@
+---
+import Sidebar from '../components/Sidebar.svelte'
+import Search from '../components/Search.svelte'
+
+export interface Props {
+	title: string;
+}
+const { title } = Astro.props;
+
+const fetchedArticles = await fetch('http://localhost:1337/api/articles/?populate=%2A').then(x  => x.json());
+const fetchedCategories  =  await fetch(`http://localhost:1337/api/categories`).then(res => res.json());
+
+const articles = fetchedArticles.data
+const categories = fetchedCategories.data
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body class="flex flex-col w-full min-h-screen overflow-x-hidden text-gray-900 bg-white dark:bg-gray-900 dark:text-gray-200 undefined">
+		<div class="z-0 px-6 lg:flex lg:h-screen">
+			<nav class="hidden shrink-0 lg:block">
+				<Sidebar categories={categories} pages={articles} client:idle/>
+			</nav>
+			<slot/>
+			<!-- To-Do: Implement "Recently updated articles:" (Recents.svelte) component in footer -->
+		</div>
+		<Search articles={articles} client:only="svelte"/>
+	</body>
+</html>

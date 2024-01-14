@@ -1,0 +1,25 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import ArticleLayout from '../layouts/ArticleLayout.astro';
+import CMSArticle from '../components/CMSArticle.svelte';
+// import Card from '../components/Card.astro';
+const slug = "netsys_docs"
+const articleItem = await fetch('http://localhost:1337/api/articles/?filters%5Bslug%5D%5B$eq%5D=' + slug).then(x  => x.json());
+---
+<MainLayout title={"Netsys Knowledgebase"}>
+	<ArticleLayout>
+		<CMSArticle article={articleItem.data}/>
+	</ArticleLayout>
+</MainLayout>
+<!-- <MainLayout title="Netsys Knowledgebase">
+
+	<ArticleLayout>
+		To-Do: Use CMSArticle for home page
+		<article class="prose lg:prose-xl">
+		<h1>Netsys Docs</h1>
+		</article>
+	</ArticleLayout>
+</MainLayout> -->
+
+<!-- 10:30-3:30 -->
+<!-- 4:20- -->

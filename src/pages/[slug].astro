@@ -1,0 +1,29 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import ArticleLayout from '../layouts/ArticleLayout.astro'
+import CMSArticle from '../components/CMSArticle.svelte'
+
+export async function getStaticPaths() {
+    const articles  =  await fetch(`http://localhost:1337/api/articles?populate=%2A`).then(res => res.json())
+    return articles.data.map(article =>  ({
+		params : {
+			slug: article.attributes.slug
+		},
+		props: {
+			title: article.attributes.title
+		}}));
+	// return [
+	// 	{params: {slug: "test_article"}},
+	// 	{params: {slug: "article_two"}}
+	// ];
+}
+
+const {slug} =  Astro.params;
+const {title} = Astro.props;
+const articleItem = await fetch('http://localhost:1337/api/articles/?filters%5Bslug%5D%5B$eq%5D=' + slug).then(x  => x.json());
+---
+<MainLayout title={title + " | Netsys"}>
+	<ArticleLayout>
+		<CMSArticle article={articleItem.data}/>
+	</ArticleLayout>
+</MainLayout>
